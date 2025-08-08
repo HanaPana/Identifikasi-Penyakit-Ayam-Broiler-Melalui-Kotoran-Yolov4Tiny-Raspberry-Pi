@@ -12,18 +12,18 @@ from gpiozero import LED
 import cProfile
 
 #token bot
-bot = telebot.TeleBot('7958361007:AAEi3sHloPfYHe-lmJuTVSOgKt-mTeYhbD8')
-chat_id = 1496177203
+bot = telebot.TeleBot('...') #fill with bot token
+chat_id = '...' #filled with chat id if necessary
 
-#untuk menyimpan daftar log pesan yang sudah dikirim di dalam sebuah file
+#to save message log in a file
 logging.basicConfig(
-    filename="/home/thyas/tugas_akhir/bot/bot_message_log.txt",
+    filename="'...'", #fill with directory to store the log file
     level=logging.INFO,
     format='%(asctime)s - %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-#untuk threading dan telegram
+#threading and telegram
 detected_objects = []
 lock = threading.Lock()
 detection_started = False
@@ -37,13 +37,13 @@ redPin = LED(25)
 greenPin = LED(23)
 bluePin = LED(24)
 
-#untuk kelas sakit
+#sick classes
 def red():
     redPin.on()
     greenPin.off()
     bluePin.off()
 
-#untuk kelas sehat
+#healthy class
 def green():
     redPin.off()
     greenPin.on()
@@ -70,7 +70,7 @@ current_net = net
 #camera on
 cam.start()
 
-# definisikan null bounding boxes untuk per tiap area kandang
+# null bounding boxes for each area
 bounding_boxes = [
     {"x": 1, "y": 1, "width": 404, "height": 888, "kandang": "A"},
     {"x": 413, "y": 1, "width": 400, "height": 898, "kandang": "B"},
@@ -79,15 +79,14 @@ bounding_boxes = [
     {"x": 1631, "y": 1, "width": 363, "height": 876, "kandang": "E"}
 ]
 
-#caption untuk foto
+#caption 
 caption = {
     "sick" : "{current_time} | System detected there are sick feces in the cage {regions_str}. Please immediately check the poultries now.",
     "healthy" : "{current_time} | System doesn't detect any sick feces in the cage. All poultries are in good condition.",
     "none" : "{current_time} | System does not detect any sick nor healthy feces in the poultries' cages."
     }    
 
-#melihat log hanya untuk kotoran yang adanya pendeteksian untuk kotoran sakit
-def log_detection_event(class_label, regions_str):
+#log for identified sick poopdef log_detection_event(class_label, regions_str):
     if class_label in sick_classes:    
         detection_message = f"Sick Feces ({class_label}) in cage {regions_str}."
     elif class_label == "healthy":
@@ -99,7 +98,7 @@ def log_detection_event(class_label, regions_str):
 
 #object detection
 def obj_detection():          
-    #Memeriksa apakah sistem dapat mengirim pesan (interval 15 menit)
+    # checking if the system can send message (15 mins interval)
     def can_send_image():
         global last_message_time
         current_time1 = datetime.now()        
@@ -111,7 +110,7 @@ def obj_detection():
             return True
         return False
     
-    #mengirimkan image ke telegram ketika sudah memasuki waktu intervalnya
+    #sending message
     def send_image(frame, current_time):
         global sick_detected, num
         cv2.imwrite(out_path, frame)
@@ -134,7 +133,7 @@ def obj_detection():
         num += 1
         captured_label.clear()
     
-    #mengirimkan image ke telegram versi button
+    #sending message if button is pressed
     def send_image_button(frame, current_time, detected_objects):
         global sick_detected, num
         try:
@@ -161,7 +160,7 @@ def obj_detection():
             num += 1
             captured_label.clear()
     
-    # memeriksa apakah objek berada pada region/null bounding boxes
+    #checking whether object is inside the null boxes
     def is_object_in_region(object_coords, region):
         try:
             #memeriksa x, y, lebar dan tinggi
@@ -174,7 +173,7 @@ def obj_detection():
             print(f"Error accessing region data: {e}")
             return False
     
-    #memeriksa posisi objek di region/null bounding box yang mana
+    #checking in which null bounding box
     def region_check(detected_obj, region):   
         detected_regions = []
         alerted_region.clear()
@@ -201,7 +200,7 @@ def obj_detection():
             confidence_threshold = 0.1
             nms_threshold = 0.2
             
-            #untuk alert region tempat daerah sakit
+            #region alert
             alerts = {}
             alerted_region = set()
             button_label = set()
@@ -252,14 +251,12 @@ def obj_detection():
             font = cv2.FONT_HERSHEY_SIMPLEX
             colors = np.random.uniform(0, 255, size=(len(boxes), 3))
             
-            #waktu dan tanggal sekarang
             current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-            #path asal foto
-            out_path = f"/home/thyas/tugas_akhir/TES_FOTO/I | {current_time} | {num}.jpg"
-            out_path1 = f"/home/thyas/tugas_akhir/TES_FOTO/B | {current_time} | {num}.jpg"
+            #images path
+            out_path = f"'...' | {current_time} | {num}.jpg" #fill with directory to save the images
+            out_path1 = f"'...' | {current_time} | {num}.jpg" #fill with directory to save the images for button
             
-            #meletakkan waktu
             cv2.putText(frame, current_time, (1, 25), font, 1, (255, 255, 0), 2)
             
             sick_detected = False
@@ -291,7 +288,7 @@ def obj_detection():
                                           
                         captured_label.append(class_label)
                         
-                        #pelabelan nya
+                        #labeling
                         if class_label in sick_classes:
                             sick_detected = True
                             red()
@@ -310,7 +307,7 @@ def obj_detection():
                                 send_image(frame, current_time)
                             print("Tidak ada kotoran yang terdeteksi.")
                
-               #untuk push button
+               #push button
                 if GPIO.input(26) == GPIO.LOW:
                     bot.send_message(chat_id, "The button has been pressed, please wait...")
                     send_image_button(frame, current_time, captured_label)
@@ -368,7 +365,7 @@ def handle_check(message):
 def handle_log(message):
     try:
         # Read the log file
-        with open("/home/thyas/tugas_akhir/bot/bot_message_log.txt", 'r') as log_file:
+        with open('...', 'r') as log_file: #fill with directory where the log file is saved
             log_content = log_file.read()
         
         # Send the log content as a message to the user (limited to 4000 characters)
