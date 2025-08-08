@@ -17,7 +17,10 @@ Apabila Anda berniat melakukan proses <i>training</i> menggunakan dataset sendir
 
 <h2 class="has-line-data" data-line-start="3" data-line-end="4"><i>Output</i> Telegram:</h2>
 <div align="center">
-  <img src="https://github.com/HanaPana/Identifikasi-Penyakit-Ayam-Broiler-Melalui-Kotoran-Yolov4Tiny-Raspberry-Pi/blob/main/sample1.png" alt="Healthy">
-  <img src="https://github.com/HanaPana/Identifikasi-Penyakit-Ayam-Broiler-Melalui-Kotoran-Yolov4Tiny-Raspberry-Pi/blob/main/sample%202.png" alt="Healthy">
-  <img src="https://github.com/HanaPana/Identifikasi-Penyakit-Ayam-Broiler-Melalui-Kotoran-Yolov4Tiny-Raspberry-Pi/blob/main/sample3.png" alt="Healthy">
+  <img width="535" height="759" alt="image" src="https://github.com/user-attachments/assets/8011ba18-ab18-4b6a-b14e-43c1b3567e2d" />
+  <img width="547" height="763" alt="image" src="https://github.com/user-attachments/assets/efc2844f-35ec-4d2b-86eb-7202f1eaf158" />
+  <img width="536" height="760" alt="image" src="https://github.com/user-attachments/assets/59e305ea-aa97-429f-9abb-46c8528b9d3d" />
+  <img width="540" height="763" alt="image" src="https://github.com/user-attachments/assets/b21d34f4-99b5-4036-aa21-64887a56e35d" />
 </div>
+
+
